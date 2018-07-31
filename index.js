@@ -64,10 +64,10 @@ function store_chat(data) {
 
 function db_connect() {
     var con = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "notepadDB"
+        host: "us-cdbr-iron-east-01.cleardb.net",
+        user: "bed5f52a7cde0b",
+        password: "fbc9a180",
+        database: "heroku_3fd975a5135759a"
     });
     return con;
 }
