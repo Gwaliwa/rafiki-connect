@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Notepad" />
+    <meta name="keywords" content="Notepad" />
+    <meta name="robots" content="index, follow" />
+    <title>Notepad</title>
+
+    <!-- Stylesheets
+    ================================================= -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/jquery.scrollbar.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/ionicons.min.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link href="css/emoji.css" rel="stylesheet">
+
+    <!--Google Font-->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
+
+    <!--Favicon-->
+    <link rel="shortcut icon" type="image/png" href="images/fav.png"/>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+<!-- Header
+================================================= -->
+<header id="header">
+    <nav class="navbar navbar-default navbar-fixed-top menu">
+        <div class="container">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                    Notepad
+                    <!-- <img src="images/logo.png" alt="logo" /> -->
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
+    </nav>
+</header>
+<!--Header End-->
+
+<div id="page-contents">
+    <div class="container">
+        <div class="row">
+            <!-- chat room
+      ================================================= -->
+
+            <div class="chat-room">
+
+                <div  class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-2">
+                            <input id="user" class="form-control" type="text" placeholder="User" />
+                        </div>
+                        <div class="col-md-2 col-md-offset-6">
+                            <button type="button" class="btn btn-sm btn-share export_to_pdf">
+                                <span class="fa fa-download"></span> pdf
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-sm btn-share">
+                                <span class="fa fa-envelope"></span> emailTo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div  class="row">
+                    <div class="col-md-12">
+                        <h4 class="chat-title">Session</p></h4>
+                    </div>
+                </div>
+
+                <div  class="row">
+                    <div class="col-md-12">
+
+                        <!--Chat Messages-->
+                        <div class="tab-content scrollbar-wrapper wrapper scrollbar-outer">
+                            <div class="col-md-12">
+                                <div id="output"></div>
+                                <div id="feedback"></div>
+                                <div><input type="hidden" id="session_id"></div>
+                            </div>
+                        </div><!--Chat Messages-->
+
+                        <div class="send-message">
+                            <div class="input-group">
+                                <textarea id="message" type="text" class="form-control" placeholder="Type your message" row="1"></textarea>
+                                <span class="input-group-btn">
+                        <button id="send" class="btn btn-sm btn-send">
+                          <span class="fa fa-send"></span> send
+                        </button>
+                      </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <!-- chat room
+      ================================================= -->
+
+        </div>
+    </div>
+</div>
+
+<!-- Footer
+================================================= -->
+<footer id="footer">
+    <div class="copyright">
+        <p>© 2018. All rights reserved</p>
+    </div>
+</footer>
+
+<!--preloader-->
+<div id="spinner-wrapper">
+    <div class="spinner"></div>
+</div>
+
+<!-- Scripts
+================================================= -->
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.sticky-kit.min.js"></script>
+<script src="js/jquery.scrollbar.min.js"></script>
+<script src="js/script.js"></script>
+
+<script type="text/javascript" src="/chat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var session_id = urlParam('session_id');
+        $('#session_id').val(session_id);
+        showPrevChatLogs();
+    });
+    $('.export_to_pdf').on('click', function(){
+        var doc = new jsPDF();
+        var cont = $('#output').html();
+        doc.fromHTML(cont, 10, 10);
+        doc.save('chat.pdf');
+    });
+    function urlParam(param){
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++){
+            var sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] == param){
+                return sParameterName[1];
+            }
+        }
+    }
+    function showPrevChatLogs() {
+        var req = new XMLHttpRequest();
+        var session_id = $('#session_id').val();
+        var url = '/chat-logs/'+session_id;
+
+        req.open('GET',url,true);
+        req.addEventListener('load',onLoad);
+        req.addEventListener('error',onError);
+
+        req.send();
+
+        function onLoad() {
+            var response = this.responseText;
+            var parsedResponse = JSON.parse(response);
+            // access your data newly received data here and update your DOM with appendChild(), findElementById(), etc...
+            var chatLogs = parsedResponse['logs'];
+            $.each(chatLogs, function(key, chat){
+                var output = document.getElementById('output');
+                output.innerHTML += '<p><strong>' + chat.username + ': </strong>' + chat.message + '</p>';
+            });
+        }
+
+        function onError() {
+            // handle error here, print message perhaps
+            console.log('error receiving async AJAX call');
+        }
+
+    }
+</script>
+
+</body>
+</html>

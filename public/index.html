@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Notepad" />
+    <meta name="keywords" content="Notepad" />
+    <meta name="robots" content="index, follow" />
+    <title>Notepad</title>
+
+    <!-- Stylesheets
+    ================================================= -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/ionicons.min.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+
+    <!--Google Font-->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
+
+    <!--Favicon-->
+    <link rel="shortcut icon" type="image/png" href="images/fav.png"/>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+<!-- Header
+================================================= -->
+<header id="header" class="lazy-load">
+    <nav class="navbar navbar-default navbar-fixed-top menu">
+        <div class="container">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <!--<img src="images/logo.png" alt="logo" />-->
+                    Notepad
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
+    </nav>
+</header>
+<!--Header End-->
+
+<!-- Top Banner
+================================================= -->
+<section id="banner">
+    <div class="container">
+
+        <!-- Form
+        ================================================= -->
+        <div class="sign-up-form">
+            <h2 class="text-white">Notepad</h2>
+            <div class="line-divider"></div>
+            <div class="form-wrapper">
+                <p class="signup-text">Communication simplified</p>
+                <form>
+
+                    <fieldset class="form-group">
+                        <input type="text" class="form-control" id="new-session" placeholder="new session">
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                       <button id="btn-new-session" type="button" class="btn-secondary top-0">create new</button>
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        -- OR --
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        <select type="text" class="form-control" id="session-id">
+                            <option>-- session id --</option>
+                        </select>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <button id="btn-view-session" type="button" class="btn-secondary top-0">View chat</button>
+                    </fieldset>
+
+                </form>
+            </div>
+            <img class="form-shadow" src="images/bottom-shadow.png" alt="" />
+        </div><!--Form End -->
+
+    </div>
+</section>
+
+<!-- Features Section
+================================================= -->
+<section id="features">
+    <div class="container wrapper">
+        <h1 class="section-title slideDown">I am employable</h1>
+        <h2 class="sub-title">Disability is not inability</h2>
+    </div>
+
+</section>
+
+<!-- Image Divider
+================================================= -->
+<!--<div class="img-divider hidden-sm hidden-xs"></div>-->
+
+<!-- Footer
+================================================= -->
+<footer id="footer">
+    <div class="copyright">
+        <p>© 2018. All rights reserved</p>
+    </div>
+</footer>
+
+<!--preloader-->
+<div id="spinner-wrapper">
+    <div class="spinner"></div>
+</div>
+
+<!-- Scripts
+================================================= -->
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.appear.min.js"></script>
+<script src="js/jquery.incremental-counter.js"></script>
+<script src="js/script.js"></script>
+
+<script type="text/javascript" src="/session.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        showChatSessions();
+    });
+    function showChatSessions() {
+        var req = new XMLHttpRequest();
+        var url = '/chat-sessions';
+
+        req.open('GET',url,true);
+        req.addEventListener('load',onLoad);
+        req.addEventListener('error',onError);
+
+        req.send();
+
+        function onLoad() {
+            var response = this.responseText;
+            var parsedResponse = JSON.parse(response);
+            // access your data newly received data here and update your DOM with appendChild(), findElementById(), etc...
+            var session_select = $("#session-id");
+            var chatSessions = parsedResponse['sessions'];
+            $.each(chatSessions, function(key, session){
+                session_select.append($("<option />").val(session.session_id).text(session.session_id));
+            });
+        }
+
+        function onError() {
+            // handle error here, print message perhaps
+            console.log('error receiving async AJAX call');
+        }
+
+    }
+</script>
+
+</body>
+</html>
