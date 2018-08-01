@@ -1,5 +1,5 @@
-// var socket  = io.connect('/');
-var socket  = io.connect('http://localhost:4000/');
+var socket  = io.connect('/');
+// var socket  = io.connect('http://localhost:4000/');
 
 // Query DOM
 var newSessionBtn = document.getElementById('btn-new-session');

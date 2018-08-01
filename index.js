@@ -131,9 +131,9 @@ app.get('/chat-sessions', function(req,res) {
         if (err) throw err;
         connection.query(sql, function (error, results, fields) {
             var chatSessions = {'sessions': results};
-            var cchatSessionsJSONdata = JSON.stringify(chatSessions);
+            var chatSessionsJSONdata = JSON.stringify(chatSessions);
             connection.release();
-            res.send(cchatSessionsJSONdata);
+            res.send(chatSessionsJSONdata);
             if (error) throw error;
         });
     });
