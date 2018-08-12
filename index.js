@@ -42,7 +42,7 @@ io.on('connection', function(socket){
 function store_session(data) {
     var date = formatDate(new Date());
     var name = data;
-    var id = data+"-"+date;
+    var id = data+"-"+currDateMillsecs(new Date());
     var session_id = id.replace(/\s/g,"-");
     var sql = "INSERT INTO session (name, session_id, date) VALUES ('"+name+"', '"+session_id+"', '"+date+"')";
     /*db_con.query(sql, function (err, result) {
@@ -98,6 +98,21 @@ function formatDate(date) {
     if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('-')+' '+[hrs, mns, secs].join(':');
+}
+
+function currDateMillsecs(date) {
+    var d = new Date(date),
+        year = d.getFullYear(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        hrs = '' + d.getHours(),
+        mns = '' + d.getMinutes(),
+        secs = '' + d.getSeconds();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return year+month+day+hrs+mns+secs;
 }
 
 app.get('/chat-logs/:session_id', function(req,res) {

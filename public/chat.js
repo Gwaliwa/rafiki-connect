@@ -1,5 +1,5 @@
-var socket  = io.connect('/');
-// var socket  = io.connect('http://localhost:4000/');
+// var socket  = io.connect('/');
+var socket  = io.connect('http://localhost:4000/');
 
 // Query DOM
 var message = document.getElementById('message'),
@@ -32,10 +32,18 @@ socket.on('chat', function(data){
         feedback.innerHTML = '';
         output.innerHTML += '<p><strong>' + data.user + ': </strong>' + data.message + '</p>';
     }
+    scrollToBottom();
 });
 
 socket.on('typing', function(data){
     if(data.session_id == $('#session_id').val()){
         feedback.innerHTML = '<p><em>' + data.user + ': '+ data.message +'</em></p>';
+        scrollToBottom();
     }
 });
+
+ function scrollToBottom(){
+     $('#chat_msgs_sect').animate({
+      scrollTop: $('#chat_msgs_sect')[0].scrollHeight
+    }, 1000);
+  }

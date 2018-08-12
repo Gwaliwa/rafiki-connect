@@ -5,7 +5,7 @@
     "npm": "5.6.0"
   },
   "version": "1.0.0",
-  "description": "",
+  "description": "http://browserify.org/",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
