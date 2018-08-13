@@ -1,6 +1,14 @@
 var express = require('express');
 var socket = require('socket.io');
 var mysql = require('mysql');
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'emanuel.julius.ej@gmail.com',
+    pass: '3663emjmp3663'
+  }
+});
 /*var db_con = db_connect();
 db_con.connect(function(err) {
         if (err) throw err;
@@ -37,6 +45,16 @@ io.on('connection', function(socket){
         store_session(data);
     });
 
+    socket.on('send-email', function(data){
+        send_email(data);
+        io.sockets.emit('email-sent', data);
+    });
+
+    socket.on('share-link', function(data){
+        share_link(data);
+        io.sockets.emit('link_shared', data);
+    });
+
 });
 
 function store_session(data) {
@@ -50,6 +68,40 @@ function store_session(data) {
     });*/
     db_simple_query(sql);
     io.sockets.emit('home-redirect', session_id);
+}
+
+function send_email(data){
+   var mailOptions = {
+  from: data.email_from,
+  to: data.email_to,
+  subject: 'Attachment',
+  text: 'Attached is the session message logs',
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+});
+}
+
+function share_link(data){
+   var mailOptions = {
+  from: data.email_from,
+  to: data.email_to,
+  subject: 'Rafikiconnect url',
+  text: 'rafikiconnect url:'+data.url
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('link shared: ' + info.response);
+  }
+});
 }
 
 function store_chat(data) {

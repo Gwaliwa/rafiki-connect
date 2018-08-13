@@ -42,6 +42,39 @@ socket.on('typing', function(data){
     }
 });
 
+$('.btn_email_to').on("click", function(){
+    var from = $('#user').val();
+    var to = $('.email_to').val();
+    socket.emit('send-email', {
+      email_from: from,
+      email_to: to
+  });
+});
+
+socket.on('email-sent', function(data){
+    if(data.email_from == $('#user').val()){
+        alert("Email sent successfully!");
+    }
+});
+
+$('.btn_link_share').on("click", function(){
+    var from = $('#user').val();
+    var to = $('.email_to').val();
+    var url = window.location.href;
+    socket.emit('share-link', {
+      email_from: from,
+      email_to: to,
+      url: url
+  });
+});
+
+socket.on('link_shared', function(data){
+    if(data.email_from == $('#user').val()){
+        alert("Link shared successfully!");
+    }
+});
+
+
  function scrollToBottom(){
      $('#chat_msgs_sect').animate({
       scrollTop: $('#chat_msgs_sect')[0].scrollHeight
