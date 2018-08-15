@@ -45,9 +45,11 @@ socket.on('typing', function(data){
 $('.btn_email_to').on("click", function(){
     var from = $('#user').val();
     var to = $('.email_to').val();
+    var msg_logs = $('#output').html();
     socket.emit('send-email', {
       email_from: from,
-      email_to: to
+      email_to: to,
+      msg_logs: msg_logs
   });
 });
 

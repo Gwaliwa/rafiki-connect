@@ -71,11 +71,12 @@ function store_session(data) {
 }
 
 function send_email(data){
+    console.log("<<message logs>> "+data.msg_logs);
    var mailOptions = {
-  from: data.email_from,
+  from: 'emanuel.julius.ej@gmail.com',
   to: data.email_to,
   subject: 'Attachment',
-  text: 'Attached is the session message logs',
+  text: 'Attached is the session message logs'
 };
 
 transporter.sendMail(mailOptions, function(error, info){
@@ -89,7 +90,7 @@ transporter.sendMail(mailOptions, function(error, info){
 
 function share_link(data){
    var mailOptions = {
-  from: data.email_from,
+  from: 'emanuel.julius.ej@gmail.com',
   to: data.email_to,
   subject: 'Rafikiconnect url',
   text: 'rafikiconnect url:'+data.url
