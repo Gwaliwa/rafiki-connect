@@ -71,7 +71,6 @@ function store_session(data) {
 }
 
 function send_email(data){
-    console.log("<<message logs>> "+data.msg_logs);
    var mailOptions = {
   from: 'emanuel.julius.ej@gmail.com',
   to: data.email_to,
