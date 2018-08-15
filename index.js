@@ -3,14 +3,11 @@ var socket = require('socket.io');
 var mysql = require('mysql');
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: 'yahoo',
   auth: {
-    user: 'emanuel.julius.ej@gmail.com',
-    pass: 'emjmp3663emjmp'
-  },
-    tls: {
-        rejectUnauthorized: false
-    }
+    user: 'julius.emanuel@yahoo.com',
+    pass: 'emjmp3663'
+  }
 });
 /*var db_con = db_connect();
 db_con.connect(function(err) {
