@@ -6,8 +6,11 @@ var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'emanuel.julius.ej@gmail.com',
-    pass: '3663emjmp3663'
-  }
+    pass: 'emjmp3663emjmp'
+  },
+    tls: {
+        rejectUnauthorized: false
+    }
 });
 /*var db_con = db_connect();
 db_con.connect(function(err) {
@@ -97,7 +100,7 @@ function share_link(data){
 
 transporter.sendMail(mailOptions, function(error, info){
   if (error) {
-    console.log(error);
+    console.log("share link-->>"+error);
   } else {
     console.log('link shared: ' + info.response);
   }
