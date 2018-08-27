@@ -18,6 +18,17 @@ btn.addEventListener('click', function(){
   message.value = "";
 });
 
+message.addEventListener('keyup',function(e){
+    if (e.keyCode === 13) {
+        socket.emit('chat', {
+            message: message.value,
+            user: user.value,
+            session_id: $('#session_id').val()
+        });
+        message.value = "";
+    }
+});
+
 message.addEventListener('keyup', function(){
   socket.emit('typing', {
       message: message.value,

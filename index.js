@@ -1,12 +1,14 @@
 var express = require('express');
+var session = require('express-session');
+var bodyParser = require('body-parser');
 var socket = require('socket.io');
 var mysql = require('mysql');
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'emanuel.julius.ej@gmail.com',
-    pass: 'standard@255'
+    user: 'gwaliwa10@gmail.com',
+    pass: 'Gwaliwa2010'
   }
 });
 /*var db_con = db_connect();
@@ -24,6 +26,25 @@ var server = app.listen(PORT, function(){
 });
 
 app.use(express.static('public'));
+
+var sess;
+app.post('/login',function(req,res){
+    sess = req.session;
+    console.log("..username...."+req.getP);
+
+    res.end('done');
+
+});
+
+app.get('/logout',function(req,res) {
+    req.session.destroy(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect('/');
+        }
+    });
+});
 
 var io = socket(server);
 
@@ -72,7 +93,7 @@ function store_session(data) {
 
 function send_email(data){
    var mailOptions = {
-  from: 'emanuel.julius.ej@gmail.com',
+  from: 'gwaliwa10@gmail.com',
   to: data.email_to,
   subject: 'Attachment',
   text: 'Attached is the session message logs'
@@ -89,7 +110,7 @@ transporter.sendMail(mailOptions, function(error, info){
 
 function share_link(data){
    var mailOptions = {
-  from: 'emanuel.julius.ej@gmail.com',
+  from: 'gwaliwa10@gmail.com',
   to: data.email_to,
   subject: 'Rafikiconnect url',
   text: 'rafikiconnect url:'+data.url

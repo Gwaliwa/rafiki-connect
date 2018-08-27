@@ -65,21 +65,28 @@
             <h2 class="text-white">Rafikiconnect</h2>
             <div class="line-divider"></div>
             <div class="form-wrapper">
-                <h3>Admin login</h3>
+                <p class="signup-text">Communication simplified</p>
                 <form>
 
                     <fieldset class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control" name="username" id="username" placeholder="Username">
+                        <input type="text" class="form-control" id="new-session" placeholder="new session">
                     </fieldset>
 
                     <fieldset class="form-group">
-                        <label for="password">Password</label>
-                        <input type="text" class="form-control" name="password" id="password" placeholder="Password">
+                        <button id="btn-new-session" type="button" class="btn-secondary top-0">create new</button>
                     </fieldset>
 
                     <fieldset class="form-group">
-                       <button id="login" type="button" class="btn-secondary top-0">login</button>
+                        -- OR --
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        <select type="text" class="form-control" id="session-id">
+                            <option>-- session id --</option>
+                        </select>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <button id="btn-view-session" type="button" class="btn-secondary top-0">View chat</button>
                     </fieldset>
 
                 </form>
@@ -92,7 +99,13 @@
 
 <!-- Features Section
 ================================================= -->
+<section id="features">
+    <div class="container wrapper">
+        <h1 class="section-title slideDown">I am employable</h1>
+        <h2 class="sub-title">Disability is not inability</h2>
+    </div>
 
+</section>
 
 <!-- Image Divider
 ================================================= -->
@@ -119,13 +132,39 @@
 <script src="js/jquery.incremental-counter.js"></script>
 <script src="js/script.js"></script>
 
-<script type="text/javascript" src="/auth_session.js"></script>
+<script type="text/javascript" src="/session.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {
-
+        showChatSessions();
     });
+    function showChatSessions() {
+        var req = new XMLHttpRequest();
+        var url = '/chat-sessions';
 
+        req.open('GET',url,true);
+        req.addEventListener('load',onLoad);
+        req.addEventListener('error',onError);
+
+        req.send();
+
+        function onLoad() {
+            var response = this.responseText;
+            var parsedResponse = JSON.parse(response);
+            // access your data newly received data here and update your DOM with appendChild(), findElementById(), etc...
+            var session_select = $("#session-id");
+            var chatSessions = parsedResponse['sessions'];
+            $.each(chatSessions, function(key, session){
+                session_select.append($("<option />").val(session.session_id).text(session.session_id));
+            });
+        }
+
+        function onError() {
+            // handle error here, print message perhaps
+            console.log('error receiving async AJAX call');
+        }
+
+    }
 </script>
 
 </body>
