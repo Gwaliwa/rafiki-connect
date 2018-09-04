@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var socket = require('socket.io');
 var mysql = require('mysql');
 var nodemailer = require('nodemailer');
+var htmlToPdf = require('html-to-pdf');
+const fs = require('fs');
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -94,14 +96,26 @@ function store_session(data) {
 }
 
 function send_email(data){
+    var datetime = new Date();
+    var pdf_name = 'chat_'+datetime.getTime()+'.pdf';
+    var pdf_path = appRoot+'/files/'+pdf_name;
+    htmlToPdf.convertHTMLString(data.content, pdf_path,
+        function (error, success) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Created temp file: '+pdf_path);
+            }
+        }
+    );
    var mailOptions = {
   from: 'gwaliwa10@gmail.com',
   to: data.email_to,
   subject: 'Attachment',
   text: 'Attached is the session message logs',
        attachments: [{
-           filename: 'a4.pdf',
-           path: appRoot+'/files/a4.pdf',
+           filename: pdf_name,
+           path: pdf_path,
            contentType: 'application/pdf'
        }]
 };
@@ -111,6 +125,12 @@ transporter.sendMail(mailOptions, function(error, info){
     console.log(error);
   } else {
     console.log('Email sent: ' + info.response);
+      fs.unlink(pdf_path, function(error) {
+          if (error) {
+              throw error;
+          }
+          console.log('Deleted temp file: '+pdf_path);
+      });
   }
 });
 }

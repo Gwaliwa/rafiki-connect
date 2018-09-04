@@ -54,11 +54,13 @@ socket.on('typing', function(data){
 });
 
 $('.btn_email_to').on("click", function(){
+    var content = $('#output').html();
     var from = $('#user').val();
     var to = $('.email_to').val();
     socket.emit('send-email', {
       email_from: from,
-      email_to: to
+      email_to: to,
+      content: content
   });
 });
 

@@ -16,11 +16,12 @@
     "app-root-path": "^2.1.0",
     "express": "^4.16.3",
     "express-session": "^1.7.6",
+    "html-to-pdf": "^0.1.11",
     "mysql": "^2.16.0",
     "nodemailer": "^4.6.7",
     "socket.io": "^2.1.1"
   },
   "devDependencies": {
-    "nodemon": "^1.18.3"
+    "nodemon": "^1.18.4"
   }
 }
