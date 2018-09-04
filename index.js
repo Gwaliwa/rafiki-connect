@@ -19,6 +19,7 @@ var db_pool = get_db_pool();
 
 var app = express();
 var http = require('http');
+var appRoot = require('app-root-path');
 
 const PORT = process.env.PORT || 4000
 
@@ -100,7 +101,7 @@ function send_email(data){
   text: 'Attached is the session message logs',
        attachments: [{
            filename: 'a4.pdf',
-           path: '/files/a4.pdf',
+           path: appRoot+'/files/a4.pdf',
            contentType: 'application/pdf'
        }]
 };
