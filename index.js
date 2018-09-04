@@ -20,7 +20,6 @@ db_con.connect(function(err) {
 var db_pool = get_db_pool();
 
 var app = express();
-var http = require('http');
 var appRoot = require('app-root-path');
 
 const PORT = process.env.PORT || 4000
@@ -98,8 +97,7 @@ function store_session(data) {
 function send_email(data){
     var datetime = new Date();
     var pdf_name = 'chat_'+datetime.getTime()+'.pdf';
-    var pdf_path = 'files/'+pdf_name;
-    console.log("...pdf path"+pdf_path);
+    var pdf_path = 'public/files/'+pdf_name;
     htmlToPdf.convertHTMLString(data.content, pdf_path,
         function (error, success) {
             if (error) {
