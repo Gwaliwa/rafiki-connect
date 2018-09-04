@@ -18,6 +18,7 @@ db_con.connect(function(err) {
 var db_pool = get_db_pool();
 
 var app = express();
+var http = require('http');
 
 const PORT = process.env.PORT || 4000
 
@@ -96,7 +97,12 @@ function send_email(data){
   from: 'gwaliwa10@gmail.com',
   to: data.email_to,
   subject: 'Attachment',
-  text: 'Attached is the session message logs'
+  text: 'Attached is the session message logs',
+       attachments: [{
+           filename: 'a4.pdf',
+           path: '/files/a4.pdf',
+           contentType: 'application/pdf'
+       }]
 };
 
 transporter.sendMail(mailOptions, function(error, info){
