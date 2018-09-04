@@ -98,7 +98,7 @@ function store_session(data) {
 function send_email(data){
     var datetime = new Date();
     var pdf_name = 'chat_'+datetime.getTime()+'.pdf';
-    var pdf_path = appRoot+'/files/'+pdf_name;
+    var pdf_path = 'files/'+pdf_name;
     console.log("...pdf path"+pdf_path);
     htmlToPdf.convertHTMLString(data.content, pdf_path,
         function (error, success) {
