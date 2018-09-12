@@ -29,24 +29,44 @@ var server = app.listen(PORT, function(){
 });
 
 app.use(express.static('public'));
+app.use(session({
+    secret: '2C44-4D44-WppQ38S',
+    resave: true,
+    saveUninitialized: true
+}));
 
-var sess;
-app.post('/login',function(req,res){
-    sess = req.session;
-    console.log("..username...."+req.getP);
+app.get('/login/:username/:password', function(req,res) {
+    var username = req.params.username;
+    var password = req.params.password;
+    var sql = "SELECT * FROM users WHERE username='"+username+"' AND passwrd='"+password+"'";
+    db_pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        connection.query(sql, function (error, results, fields) {
+            var resultsStr = JSON.stringify(results);
+            connection.release();
+            if (results === undefined || results.length == 0) {
+                resultsStr = "error";
+            }else{
+                req.session.user = results[0].fullname;
+                req.session.admin = true;
+            }
+            res.send(resultsStr);
+            if (error) throw error;
+        });
+    });
+});
 
-    res.end('done');
-
+app.get('/checkLogin',function(req,res) {
+    if (req.session && req.session.user !== "" && req.session.admin) {
+        res.send('1');
+    }else{
+        res.send('0');
+    }
 });
 
 app.get('/logout',function(req,res) {
-    req.session.destroy(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.redirect('/');
-        }
-    });
+    req.session.destroy();
+    res.send('logout');
 });
 
 var io = socket(server);
@@ -94,7 +114,7 @@ function store_session(data) {
     io.sockets.emit('home-redirect', session_id);
 }
 
-function send_email(data){
+/*function send_email(data){
     var datetime = new Date();
     var pdf_name = 'chat_'+datetime.getTime()+'.pdf';
     var pdf_path = 'public/files/'+pdf_name;
@@ -117,7 +137,15 @@ function send_email(data){
            path: pdf_path,
            contentType: 'application/pdf'
        }]
-};
+};*/
+
+function send_email(data){
+    var mailOptions = {
+        from: 'gwaliwa10@gmail.com',
+        to: data.email_to,
+        subject: 'Attachment',
+        text: 'Attached is the session message logs'
+    };
 
 transporter.sendMail(mailOptions, function(error, info){
   if (error) {
@@ -217,11 +245,6 @@ function currDateMillsecs(date) {
 app.get('/chat-logs/:session_id', function(req,res) {
     var session_id = req.params.session_id;
     var sql = "SELECT * FROM chat WHERE session_id='"+session_id+"' order by id asc";
-    /*db_con.query(sql, function (err, result, fields) {
-        var chatLogs = {'logs': result};
-        var chatLogsJSONdata = JSON.stringify(chatLogs);
-        res.send(chatLogsJSONdata);
-    });*/
     db_pool.getConnection(function(err, connection) {
         if (err) throw err;
         connection.query(sql, function (error, results, fields) {
@@ -236,11 +259,6 @@ app.get('/chat-logs/:session_id', function(req,res) {
 
 app.get('/chat-sessions', function(req,res) {
     var sql = "SELECT * FROM session order by id asc";
-    /*db_con.query(sql, function (err, result, fields) {
-        var chatSessions = {'sessions': result};
-        var cchatSessionsJSONdata = JSON.stringify(chatSessions);
-        res.send(cchatSessionsJSONdata);
-    });*/
     db_pool.getConnection(function(err, connection) {
         if (err) throw err;
         connection.query(sql, function (error, results, fields) {

@@ -6,7 +6,8 @@ var message = document.getElementById('message'),
       user = document.getElementById('user'),
       btn = document.getElementById('send'),
       output = document.getElementById('output'),
-      feedback = document.getElementById('feedback');
+      feedback = document.getElementById('feedback')
+      logoutBtn = document.getElementById('logout');
 
 // Emit events
 btn.addEventListener('click', function(){
@@ -35,6 +36,10 @@ message.addEventListener('keyup', function(){
       user: user.value,
       session_id: $('#session_id').val()
   });
+});
+
+logoutBtn.addEventListener('click', function () {
+    logout();
 });
 
 // Listen for events
@@ -92,4 +97,19 @@ socket.on('link_shared', function(data){
      $('#chat_msgs_sect').animate({
       scrollTop: $('#chat_msgs_sect')[0].scrollHeight
     }, 1000);
+  }
+
+  function logout() {
+          var req = new XMLHttpRequest();
+          req.open('GET','/logout',true);
+          req.addEventListener('load',onLoad);
+          req.addEventListener('error',onError);
+          req.send();
+          function onLoad() {
+              console.log('logout successfully');
+              window.location.replace('/');
+          }
+          function onError() {
+              console.log('error logout out');
+          }
   }

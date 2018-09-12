@@ -2771,3 +2771,20 @@ ul.contact li i{
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
+
+#invalidCredWarning {
+  display: none;
+}
+
+#invalidCredWarning h4 {
+  color: red !important;
+}
+
+.logout {
+  float:right !important;
+  cursor: pointer;
+}
+
+.logout:hover {
+  color: #fff !important;
+}
