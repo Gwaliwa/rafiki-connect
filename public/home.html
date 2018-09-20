@@ -138,6 +138,22 @@
     $(document).ready(function() {
         showChatSessions();
     });
+    checkLogin();
+    function checkLogin() {
+        var req = new XMLHttpRequest();
+        req.open('GET','/checkLogin',true);
+        req.addEventListener('load',onLoad);
+        req.addEventListener('error',onError);
+        req.send();
+        function onLoad() {
+            if(this.responseText === "0"){
+                window.location.replace('/');
+            }
+        }
+        function onError() {
+            console.log('error in confirming login');
+        }
+    }
     function showChatSessions() {
         var req = new XMLHttpRequest();
         var url = '/chat-sessions';
