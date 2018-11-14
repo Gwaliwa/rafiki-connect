@@ -38,7 +38,7 @@ app.use(session({
 app.get('/login/:username/:password', function(req,res) {
     var username = req.params.username;
     var password = req.params.password;
-    var sql = "SELECT * FROM users WHERE username='"+username+"' AND passwrd='"+password+"'";
+    var sql = "SELECT * FROM users2 WHERE username='"+username+"' AND passwrd='"+password+"'";
     db_pool.getConnection(function(err, connection) {
         if (err) throw err;
         connection.query(sql, function (error, results, fields) {
