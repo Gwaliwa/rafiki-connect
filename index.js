@@ -8,7 +8,10 @@ var htmlToPdf = require('html-to-pdf');
 const fs = require('fs');
 var transporter = nodemailer.createTransport({
   service: 'gmail',
-  auth: {
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
     user: 'gwaliwa10@gmail.com',
     pass: 'Gwaliwa2010'
   }
