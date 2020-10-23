@@ -33,8 +33,8 @@ message.addEventListener('keyup',function(e){
 message.addEventListener('keyup', function(){
   socket.emit('typing', {
       user: user.value,
-      session_id: $('#session_id').val()
-      message: message.value,
+      session_id: $('#session_id').val(),
+      message: message.value
   });
 });
 
@@ -116,8 +116,8 @@ socket.on('link_shared', function(data){
           $("#message").val(transcript);
           socket.emit('typing', {
               user: user.value,
-              session_id: $('#session_id').val()
-              message: message.value,
+              session_id: $('#session_id').val(),
+              message: message.value
           });
       };
     
