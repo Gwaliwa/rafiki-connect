@@ -113,12 +113,13 @@ socket.on('link_shared', function(data){
       recognition.onresult = function(event) {
           var transcript = event.results[0][0].transcript;
           var confidence = event.results[0][0].confidence;
-          $("#message").val(transcript);
-          socket.emit('typing', {
-              user: user.value,
-              session_id: $('#session_id').val(),
-              message: message.value
+          message.value = transcript;
+          socket.emit('chat', {
+            message: message.value,
+            user: user.value,
+            session_id: $('#session_id').val()
           });
+          message.value = "";
       };
     
       // start recognition
