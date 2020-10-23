@@ -251,7 +251,7 @@
     function runSpeechRecognition() {
         // new speech recognition object
         var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition;
-        var recognition = new webkitSpeechRecognition();
+        var recognition = new SpeechRecognition();
 
         recognition.continuous = true;
     
