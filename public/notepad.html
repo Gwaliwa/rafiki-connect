@@ -248,7 +248,7 @@
         }
 
     }
-     function runSpeechRecognition() {
+    function runSpeechRecognition() {
         // new speech recognition object
         var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
         var recognition = new SpeechRecognition();
@@ -269,11 +269,11 @@
         recognition.onresult = function(event) {
             var transcript = event.results[0][0].transcript;
             var confidence = event.results[0][0].confidence;
-            $("#message").val(transcript);
+            $("#message").val(transcript).trigger('change');
         };
       
-         // start recognition
-         recognition.start();
+        // start recognition
+        recognition.start();
     }
 </script>
 
