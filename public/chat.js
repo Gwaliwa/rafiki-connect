@@ -117,7 +117,7 @@ socket.on('link_shared', function(data){
           var confidence = event.results[0][0].confidence;
           message.value = transcript;
           socket.emit('chat', {
-            message: message.value,
+            message: transcript,
             user: user.value,
             session_id: $('#session_id').val()
           });
