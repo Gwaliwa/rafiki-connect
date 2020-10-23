@@ -102,10 +102,12 @@ socket.on('link_shared', function(data){
       // This runs when the speech recognition service starts
       recognition.onstart = function() {
           // action.innerHTML = "<small>listening, please speak...</small>";
+          $('#speech-to-text-btn').css("color", "red");
       };
       
       recognition.onspeechend = function() {
           // action.innerHTML = "<small>stopped listening, hope you are done...</small>";
+          $('#speech-to-text-btn').css("color", "#6d6e71");
           recognition.stop();
       }
     
