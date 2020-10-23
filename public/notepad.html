@@ -248,33 +248,6 @@
         }
 
     }
-    function runSpeechRecognition() {
-        // new speech recognition object
-        var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition;
-        var recognition = new SpeechRecognition();
-
-        recognition.continuous = true;
-    
-        // This runs when the speech recognition service starts
-        recognition.onstart = function() {
-            // action.innerHTML = "<small>listening, please speak...</small>";
-        };
-        
-        recognition.onspeechend = function() {
-            // action.innerHTML = "<small>stopped listening, hope you are done...</small>";
-            recognition.stop();
-        }
-      
-        // This runs when the speech recognition service returns result
-        recognition.onresult = function(event) {
-            var transcript = event.results[0][0].transcript;
-            var confidence = event.results[0][0].confidence;
-            $("#message").val(transcript).trigger('change');
-        };
-      
-        // start recognition
-        recognition.start();
-    }
 </script>
 
 </body>

@@ -32,9 +32,9 @@ message.addEventListener('keyup',function(e){
 
 message.addEventListener('keyup', function(){
   socket.emit('typing', {
-      message: message.value,
       user: user.value,
       session_id: $('#session_id').val()
+      message: message.value,
   });
 });
 
@@ -92,24 +92,56 @@ socket.on('link_shared', function(data){
     }
 });
 
+  function runSpeechRecognition() {
+      // new speech recognition object
+      var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition;
+      var recognition = new SpeechRecognition();
 
- function scrollToBottom(){
+      recognition.continuous = true;
+  
+      // This runs when the speech recognition service starts
+      recognition.onstart = function() {
+          // action.innerHTML = "<small>listening, please speak...</small>";
+      };
+      
+      recognition.onspeechend = function() {
+          // action.innerHTML = "<small>stopped listening, hope you are done...</small>";
+          recognition.stop();
+      }
+    
+      // This runs when the speech recognition service returns result
+      recognition.onresult = function(event) {
+          var transcript = event.results[0][0].transcript;
+          var confidence = event.results[0][0].confidence;
+          $("#message").val(transcript);
+          socket.emit('typing', {
+              user: user.value,
+              session_id: $('#session_id').val()
+              message: message.value,
+          });
+      };
+    
+      // start recognition
+      recognition.start();
+  }
+
+  function scrollToBottom(){
      $('#chat_msgs_sect').animate({
       scrollTop: $('#chat_msgs_sect')[0].scrollHeight
     }, 1000);
   }
 
   function logout() {
-          var req = new XMLHttpRequest();
-          req.open('GET','/logout',true);
-          req.addEventListener('load',onLoad);
-          req.addEventListener('error',onError);
-          req.send();
-          function onLoad() {
-              console.log('logout successfully');
-              window.location.replace('/');
-          }
-          function onError() {
-              console.log('error logout out');
-          }
+      var req = new XMLHttpRequest();
+      req.open('GET','/logout',true);
+      req.addEventListener('load',onLoad);
+      req.addEventListener('error',onError);
+      req.send();
+      function onLoad() {
+          console.log('logout successfully');
+          window.location.replace('/');
+      }
+      function onError() {
+          console.log('error logout out');
+      }
   }
