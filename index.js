@@ -25,7 +25,8 @@ var db_pool = get_db_pool();
 var app = express();
 var appRoot = require('app-root-path');
 
-const PORT = process.env.PORT || 4000
+//const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT || 3000
 
 var server = app.listen(PORT, function(){
     console.log('Server listens at port '+PORT);
