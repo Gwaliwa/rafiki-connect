@@ -26,11 +26,20 @@ var app = express();
 var appRoot = require('app-root-path');
 
 //const PORT = process.env.PORT || 4000
-const PORT = process.env.PORT || 3000
+//const PORT = process.env.PORT || 3000
 
-var server = app.listen(PORT, function(){
-    console.log('Server listens at port '+PORT);
+//var server = app.listen(PORT, function(){
+    //console.log('Server listens at port '+PORT);
+//});
+
+
+app.listen(process.env.PORT || 3000, function() {
+console.log('Server listening on port 3000');
+
 });
+
+
+
 
 app.use(express.static('public'));
 app.use(session({
