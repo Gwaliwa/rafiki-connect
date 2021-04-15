@@ -25,21 +25,12 @@ var db_pool = get_db_pool();
 var app = express();
 var appRoot = require('app-root-path');
 
-//const PORT = process.env.PORT || 4000
-//const PORT = process.env.PORT || 3000
-
-//var server = app.listen(PORT, function(){
-    //console.log('Server listens at port '+PORT);
-//});
+const PORT = process.env.PORT || 4000
 
 
-app.listen(process.env.PORT || 3000, function() {
-console.log('Server listening on port 3000');
-
+var server = app.listen(PORT, function(){
+    console.log('Server listens at port '+PORT);
 });
-
-
-
 
 app.use(express.static('public'));
 app.use(session({
